@@ -1,8 +1,10 @@
 const NavBar = ({ loggedIn }) => {
   return (
     <div className="navbar">
-      <div className="navbar-block">
-        <h1>Scholar Portal</h1>
+      <div className="navbar-title">
+        <h1>
+          <a href="/">Scholar Portal</a>
+        </h1>
       </div>
       <div className="navbar-block">
         {loggedIn ? (

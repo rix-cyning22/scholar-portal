@@ -1,0 +1,90 @@
+.navbar {
+    background-color: #0A4F70;
+    color: white;
+    padding: 15px 20px 0px 20px;
+    position: sticky;
+    z-index: 100;
+    top: 0;
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.navbar-block {
+    display: flex;
+    gap: 5px;
+    justify-content: flex-end;
+}
+
+.navbar-item a {
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+}
+
+.container, form, .control {
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+}
+
+form {
+    width: 600px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+h1 a {
+    text-decoration: none;
+    color: white;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+button {
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.scholar-profile {
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.scholar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.err-msg {color:red;}
+.scholar-dept {color: gray; }
+.btn-success:hover { background-color: #3b613d; }
+.btn-success {background-color: #448a48;}
+.btn-view {background-color: #0b4c6c;}
+.btn-view:hover {background-color: #001621;}
+.control { width: fit-content; }
+.navbar-item:hover { background-color: #062737; }
+.navbar-item { padding: 10px; }
+.container { margin: 20px 120px; }
+.input-err { border: 1px solid red;}
