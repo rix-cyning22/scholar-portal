@@ -1,4 +1,4 @@
-const Scholar = require("../scholar");
+const Scholar = require("../model/scholar");
 
 exports.isLoggedIn = (req, res, next) => {
   if (req.session && req.session.user) res.json(true);

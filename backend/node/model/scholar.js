@@ -2,11 +2,15 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ScholarSchema = new Schema({
+  insttId: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
   },
-  department_id: {
+  deptId: {
     type: String,
     required: true,
   },
