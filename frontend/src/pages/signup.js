@@ -30,7 +30,7 @@ const SignupPage = ({ backendPath }) => {
       });
       if (response.ok) {
         setFormErr(null);
-        navigate("/profile-view");
+        navigate("/auth/login");
       } else {
         const error = await response.json();
         setFormErr(error.message);
@@ -42,7 +42,7 @@ const SignupPage = ({ backendPath }) => {
 
   return (
     <>
-      <NavBar loggedIn={false} />
+      <NavBar loggedIn={false} backendPath={backendPath} />
       <div className="container">
         {formErr ? <div className="err-msg err">{formErr}</div> : null}
         <form onSubmit={(event) => handleSubmit(event)}>

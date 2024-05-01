@@ -28,6 +28,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: sessionStore,
+    expires: new Date(Date.now() + 3 * 60 * 60 * 1000),
   })
 );
 
@@ -44,6 +45,6 @@ mongoose
   .connect(mongoUri)
   .then((result) => {
     app.listen(process.env.NODE_PORT);
-    console.log("database conected!!");
+    console.log("database connected!!");
   })
   .catch((err) => console.log(err));

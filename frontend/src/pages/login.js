@@ -33,7 +33,7 @@ const LoginPage = ({ backendPath }) => {
   };
   return (
     <>
-      <NavBar loggedIn={false} />
+      <NavBar loggedIn={false} backendPath={backendPath} />
       <div className="container">
         {formErr ? <div className="err-msg err">{formErr}</div> : null}
         <form onSubmit={handleSubmit}>

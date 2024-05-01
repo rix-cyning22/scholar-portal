@@ -6,11 +6,7 @@ const ScholarPortalSchema = new Schema({
     type: String,
     required: true,
   },
-  name: {
-    type: String,
-    required: true,
-  },
-  deptId: {
+  password: {
     type: String,
     required: true,
   },
