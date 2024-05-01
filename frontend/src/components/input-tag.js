@@ -6,6 +6,7 @@ const Input = ({ inputname, placeholder }) => {
   const handleChange = (event) => {
     if (event.target.value === "")
       setErr(`${placeholder} field cannot be empty`);
+    else setErr(null);
     setValue(event.target.value);
   };
   const inputType = placeholder.includes("Password") ? "password" : "text";

@@ -1,6 +1,23 @@
 import NavBar from "../components/navbar";
+import { useState, useEffect } from "react";
 
-const ScholarPage = ({ loggedIn }) => {
+const ScholarPage = ({ backendPath }) => {
+  const [loggedIn, setLoggedIn] = useState(false);
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      try {
+        const response = await fetch(`${backendPath}/auth/check-session`, {
+          method: "POST",
+          credentials: "include",
+        });
+        const data = await response.json();
+        setLoggedIn(data);
+      } catch (error) {
+        console.error("Error checking login status:", error);
+      }
+    };
+    checkLoggedIn();
+  }, [backendPath]);
   const scholars = [
     {
       name: "Prasanta K. Jana",

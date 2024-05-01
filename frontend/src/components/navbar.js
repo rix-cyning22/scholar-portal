@@ -10,7 +10,7 @@ const NavBar = ({ loggedIn }) => {
         {loggedIn ? (
           <>
             <div className="navbar-item">
-              <a href="/auth/edit-profile">Edit Profile</a>
+              <a href="/profile-view">View Profile</a>
             </div>
             <div className="navbar-item">
               <a href="/auth/logout">Log out</a>

@@ -77,6 +77,13 @@ button {
     width: 100%;
 }
 
+.err {
+    padding: 20px;
+    border: red;
+    background-color: rgb(255, 128, 128);
+    border-radius: 8px;
+}
+
 .err-msg {color:red;}
 .scholar-dept {color: gray; }
 .btn-success:hover { background-color: #3b613d; }
