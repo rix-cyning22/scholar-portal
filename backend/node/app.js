@@ -3,7 +3,9 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoSessionConnect = require("connect-mongodb-session")(session);
 const authRoutes = require("./routes/auth");
-const defaultRoutes = require("./routes/scholar");
+const profileRoutes = require("./routes/profile");
+const scholarRoutes = require("./routes/defaults");
+
 require("dotenv").config({ path: "../.env" });
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -15,6 +17,7 @@ const sessionStore = new MongoSessionConnect({
 });
 const app = express();
 app.use(bodyParser.json());
+console.log(process.env);
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -24,7 +27,7 @@ app.use(
 
 app.use(
   session({
-    secret: "secret",
+    secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
     store: sessionStore,
@@ -33,7 +36,8 @@ app.use(
 );
 
 app.use("/auth", authRoutes);
-app.use("/scholar", defaultRoutes);
+app.use("/profile", profileRoutes);
+app.use("/scholar", scholarRoutes);
 
 app.use((req, res) => {
   var loggedIn = null;

@@ -1,6 +1,7 @@
 const Dept = require("../models/departments");
 const PortalScholar = require("../models/scholarportal");
 const User = require("../models/user");
+require("dotenv").config({ path: "../../../.env" });
 
 exports.changeSettings = (req, res) => {
   console.log("change");
@@ -22,27 +23,15 @@ exports.profile = async (req, res) => {
   return res.status(200).json(profile);
 };
 
-exports.getScholars = async (req, res) => {
-  const scholars = await PortalScholar.find().select("insttId");
-  const scholarsDept = await Promise.all(
-    scholars.map(async (scholar) => {
-      const userDetails = await User.findOne({ insttId: scholar.insttId });
-      const dept = await Dept.findOne({ id: userDetails.deptId });
-      return {
-        scholarName: userDetails.name,
-        scholarDept: dept ? dept.name : null,
-      };
-    })
-  );
-  return res.status(200).json(scholarsDept);
-};
-
 exports.changeParam = async (req, res) => {
-  const scholarData = await PortalScholar.findOne({
-    insttId: req.session.insttId,
-  });
-  scholarData[req.body.name] = req.body.newValue;
-  const newData = await scholarData.save();
-  console.log(newData);
-  return res.status(200).json(req.body);
+  try {
+    const scholarData = await PortalScholar.findOne({
+      insttId: req.session.insttId,
+    });
+    scholarData.set(req.body.name, req.body.newValue);
+    await scholarData.save();
+    return res.status(200).json(req.body.newValue);
+  } catch (error) {
+    return res.status(500).json(`${error}`);
+  }
 };

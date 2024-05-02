@@ -9,24 +9,20 @@ const DetailsPage = ({ backendPath }) => {
 
   useEffect(() => {
     const fetchUserDetails = async () => {
-      try {
-        const logInStatus = await fetch(`${backendPath}/auth/check-session`, {
-          method: "POST",
-          credentials: "include",
-        });
-        const data = await logInStatus.json();
-        if (!data) return navigate("/auth/login");
-        const response = await fetch(`${backendPath}/scholar/profile`, {
-          method: "POST",
-          credentials: "include",
-        });
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        } else navigate("/auth/login");
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
+      const logInStatus = await fetch(`${backendPath}/auth/check-session`, {
+        method: "POST",
+        credentials: "include",
+      });
+      const data = await logInStatus.json();
+      if (!data) return navigate("/auth/login");
+      const response = await fetch(`${backendPath}/profile`, {
+        method: "POST",
+        credentials: "include",
+      });
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+      } else navigate("/auth/login");
     };
     fetchUserDetails();
   }, [backendPath, navigate]);

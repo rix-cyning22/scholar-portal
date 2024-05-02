@@ -1,42 +1,46 @@
 from serpapi import GoogleSearch
-from dotenv import dotenv_values
-
-config = dotenv_values(".env")
 
 
-def scrape_scholar(author_id):
+def scrape_scholar(author_id, serpapi_key=None):
     params = {
         "engine": "google_scholar_author",
         "author_id": author_id,
-        "api_key": config["SERPAPI_KEY"],
+        "api_key": serpapi_key,
     }
 
     search = GoogleSearch(params)
     scholar_info = search.get_dict()
-    papers = []
-    for paper in scholar_info["articles"]:
-        papers.append(
-            {
-                "title": paper["title"],
-                "url": paper["link"],
-                "authors": paper["authors"].split(", "),
-                "year": paper["year"],
-            }
-        )
-    collaborators = []
-    for co_author in scholar_info["co_authors"]:
-        collaborators.append(
-            {
-                "name": co_author["name"],
-                "affiliations": co_author["affiliations"],
-                "link": co_author["link"],
-            }
-        )
+    scholar_info["articles"] = [
+        {
+            "title": paper["title"],
+            "url": paper["link"],
+            "authors": paper["authors"].split(", "),
+            "year": paper["year"],
+        }
+        for paper in scholar_info["articles"]
+    ]
+    scholar_info["co_authors"] = [
+        {
+            "name": co_author["name"],
+            "affiliations": co_author["affiliations"],
+            "link": co_author["link"],
+        }
+        for co_author in scholar_info["co_authors"]
+    ]
+    scholar_info["cited_by"]["table"] = [
+        {"mentions": cite[list(cite.keys())[0]]["all"], "type": list(cite.keys())[0]}
+        for cite in scholar_info["cited_by"]["table"]
+    ]
+    scholar_info["author"]["interests"] = [
+        {"title": interest["title"], "link": interest["link"]}
+        for interest in scholar_info["author"]["interests"]
+    ]
+
     return {
         **scholar_info["author"],
         "citations": scholar_info["cited_by"]["table"],
-        "papers": papers,
-        "co_authors": collaborators,
+        "papers": scholar_info["articles"],
+        "co_authors": scholar_info["co_authors"],
     }
 
 

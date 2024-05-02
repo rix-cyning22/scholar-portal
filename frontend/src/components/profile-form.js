@@ -2,26 +2,60 @@ import { useState, useEffect } from "react";
 
 const ProfileForm = ({ label, value = "", name, backendPath }) => {
   const [fieldValue, setFieldValue] = useState(value);
-  const [err, setErr] = useState(null);
+  const [status, setStatus] = useState({
+    update: false,
+    error: false,
+    message: null,
+  });
   useEffect(() => {
     setFieldValue(value);
   }, [value]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await fetch(`${backendPath}/scholar/change-info`, {
+    if (fieldValue.trim() === "")
+      setStatus({
+        update: true,
+        error: true,
+        message: `${label} field cannot be empty while submitting`,
+      });
+    const response = await fetch(`${backendPath}/profile/change-info`, {
       method: "POST",
       credentials: "include",
-      body: {
+      body: JSON.stringify({
         name: name,
         newValue: fieldValue,
-      },
+      }),
+      headers: { "Content-type": "application/json" },
     });
+    const msg = await response.json();
+    if (response.ok)
+      setStatus({
+        update: true,
+        error: false,
+        message: `${label} changed to ${msg}`,
+      });
+    else
+      setStatus({
+        update: true,
+        error: true,
+        message: msg,
+      });
   };
   const handleChange = (event) => {
     const val = event.target.value.trim();
-    if (val === "") setErr(`${label} field cannot be null`);
-    else setErr(null);
+    if (val === "")
+      setStatus({
+        update: true,
+        error: true,
+        message: `${label} field cannot be null`,
+      });
+    else
+      setStatus({
+        update: false,
+        error: false,
+        message: null,
+      });
     setFieldValue(val);
   };
   return (
@@ -35,11 +69,21 @@ const ProfileForm = ({ label, value = "", name, backendPath }) => {
             name={name}
             placeholder={label}
             onChange={(event) => handleChange(event)}
-            className={err ? "input-err" : null}
+            className={
+              status.update
+                ? status.error
+                  ? "input-err"
+                  : "input-success"
+                : null
+            }
           />
           <button className="btn-view">change</button>
         </div>
-        {err ? <div className="err-msg">{err}</div> : null}
+        {status.update ? (
+          <div className={status.error ? "err-msg" : "success-msg"}>
+            {status.message}
+          </div>
+        ) : null}
       </div>
     </form>
   );

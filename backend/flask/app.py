@@ -11,7 +11,9 @@ app = Flask(__name__)
 @app.route("/getscholardetails/", methods=["POST"])
 def get_scholar_details():
     req = request.json
-    gscholar_details = scrape_scholar(req["gscholar_id"])
+    gscholar_details = scrape_scholar(
+        req["gscholarId"], serpapi_key=os.environ.get("SERPAPI_KEY")
+    )
     irins_details = None
     orcid_details = None
     return jsonify(

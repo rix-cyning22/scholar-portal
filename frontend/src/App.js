@@ -4,13 +4,17 @@ import LoginPage from "./pages/login";
 import ScholarPage from "./pages/scholar-page";
 import SignupPage from "./pages/signup";
 import DetailsPage from "./pages/profile-view";
+import ViewInfoPage from "./pages/view-info";
 
 const App = () => {
   const backendPath = `http://localhost:8000`;
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<ScholarPage backendPath={backendPath} />} />
+        <Route
+          path="/view-info/:insttId"
+          element={<ViewInfoPage backendPath={backendPath} />}
+        />
         <Route
           path="/auth/login"
           element={<LoginPage backendPath={backendPath} />}
@@ -23,6 +27,7 @@ const App = () => {
           path="/profile-view"
           element={<DetailsPage backendPath={backendPath} />}
         />
+        <Route path="/" element={<ScholarPage backendPath={backendPath} />} />
       </Routes>
     </BrowserRouter>
   );
