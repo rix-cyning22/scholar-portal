@@ -1,6 +1,6 @@
 import NavBar from "../components/navbar";
 import { useState, useEffect } from "react";
-import Scholar from "../components/scholar";
+import ScholarCard from "../components/scholar";
 
 const ScholarPage = ({ backendPath }) => {
   const [scholars, setScholars] = useState([]);
@@ -23,7 +23,7 @@ const ScholarPage = ({ backendPath }) => {
         <div className="scholar-heading">filter search</div>
         <div className="scholar-list">
           {scholars.map((scholar, index) => {
-            return <Scholar scholar={scholar} key={index} />;
+            return <ScholarCard scholar={scholar} key={index} />;
           })}
         </div>
       </div>

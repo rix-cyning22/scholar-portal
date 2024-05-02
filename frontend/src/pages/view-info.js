@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import NavBar from "../components/navbar";
+import PapersSection from "../components/papers-section";
+import CoAuthorsSection from "../components/coauthors-section";
 
 const ViewInfoPage = ({ backendPath }) => {
   const { insttId } = useParams();
   const [papers, setPapers] = useState([]);
+  const [totPaperCount, setTotPaperCount] = useState(0);
+  const [coAuthorsCount, setCoAuthorsCount] = useState(0);
   const [coAuthors, setCoAuthors] = useState([]);
   const [scholarInfo, setScholarInfo] = useState({});
   useEffect(() => {
@@ -18,6 +22,9 @@ const ViewInfoPage = ({ backendPath }) => {
       const iniData = await initial.json();
       setScholarInfo({
         name: iniData.name,
+        gscholarId: iniData.gscholarId,
+        vidwanId: iniData.vidwanId,
+        orcidId: iniData.gscholarId,
         affiliations: iniData.affiliations,
         website: iniData.website,
         interests: iniData.interests,
@@ -25,7 +32,9 @@ const ViewInfoPage = ({ backendPath }) => {
         citations: iniData.citations,
       });
       setPapers(iniData.papers);
-      setCoAuthors(iniData.coAuthors);
+      setCoAuthors(iniData.co_authors);
+      setTotPaperCount(iniData.papersCount);
+      setCoAuthorsCount(iniData.co_authorsCount);
     };
     fetchInitialData();
   }, [backendPath, insttId]);
@@ -35,14 +44,43 @@ const ViewInfoPage = ({ backendPath }) => {
       <div className="container">
         <div className="content">
           <div className="title">
-            <img src={scholarInfo.thumbnail} alt="" loading="lazy" />
+            <img src={scholarInfo.thumbnail} alt="" />
             <div>
               <h2>{scholarInfo.name}</h2>
               <p className="scholar-dept">{scholarInfo.affiliations}</p>
-              {scholarInfo.website ? (
-                <a href={scholarInfo.website}>Website</a>
-              ) : null}
+              <div className="interests">
+                {scholarInfo.website ? (
+                  <a href={scholarInfo.website}>Website</a>
+                ) : null}
+                <a
+                  href={`https://scholar.google.com/citations?user=${scholarInfo.gscholarId}&hl=en&oi=ao`}
+                >
+                  Google Scholar
+                </a>
+                <a
+                  href={`https://iitism.irins.org/profile/${scholarInfo.vidwanId}`}
+                >
+                  IRINS
+                </a>
+                <a href={`https://orcid.org/${scholarInfo.orcidId}`}>ORCID</a>
+              </div>
             </div>
+            <table className="citations">
+              <tbody>
+                {scholarInfo.citations
+                  ? scholarInfo.citations.map((cite, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>
+                            <b>{cite.type}</b>
+                          </td>
+                          <td>{cite.mentions}</td>
+                        </tr>
+                      );
+                    })
+                  : null}
+              </tbody>
+            </table>
           </div>
           <div className="interests">
             {scholarInfo.interests
@@ -55,22 +93,20 @@ const ViewInfoPage = ({ backendPath }) => {
                 })
               : null}
           </div>
-          <table className="citations">
-            <tbody>
-              {scholarInfo.citations
-                ? scholarInfo.citations.map((cite, index) => {
-                    return (
-                      <tr key={index}>
-                        <td>
-                          <b>{cite.type}</b>
-                        </td>
-                        <td>{cite.mentions}</td>
-                      </tr>
-                    );
-                  })
-                : null}
-            </tbody>
-          </table>
+          <PapersSection
+            backendPath={backendPath}
+            papers={papers}
+            totPaperCount={totPaperCount}
+            setPapers={setPapers}
+            gscholarId={scholarInfo.gscholarId}
+          />
+          <CoAuthorsSection
+            backendPath={backendPath}
+            coAuthors={coAuthors}
+            totCoAuthorCount={coAuthorsCount}
+            setCoAuthors={setCoAuthors}
+            gscholarId={scholarInfo.gscholarId}
+          />
         </div>
       </div>
     </>

@@ -14,15 +14,7 @@ def get_scholar_details():
     gscholar_details = scrape_scholar(
         req["gscholarId"], serpapi_key=os.environ.get("SERPAPI_KEY")
     )
-    irins_details = None
-    orcid_details = None
-    return jsonify(
-        {
-            "gscholar": gscholar_details,
-            "orcid": orcid_details,
-            "irins": irins_details,
-        }
-    )
+    return jsonify(gscholar_details)
 
 
 if __name__ == "__main__":

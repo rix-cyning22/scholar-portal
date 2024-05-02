@@ -1,5 +1,15 @@
+:root {
+    --primary-color: #448a48;
+    --accent-color: #3b613d;
+    --text-color: #333;
+    --background-color: #f7f7f7;
+    --link-color: #007bff;
+    --success-color: #3b613d;
+    --error-color: #dc3545;
+}
+
 .navbar {
-    background-color: #0A4F70;
+    background-color: var(--primary-color);
     color: white;
     padding: 15px 20px 0px 20px;
     position: sticky;
@@ -24,12 +34,9 @@
     color: white;
 }
 
-.profile-lblform {
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 20px;
-    border: none;
-    width: 80%;
+h1 a {
+    text-decoration: none;
+    color: white;
 }
 
 .container, form, .control {
@@ -44,13 +51,8 @@
 form {
     width: 600px;
     padding: 20px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--background-color);
     border-radius: 5px;
-}
-
-h1 a {
-    text-decoration: none;
-    color: white;
 }
 
 input {
@@ -87,8 +89,8 @@ button {
 
 .err {
     padding: 20px;
-    border: red;
-    background-color: rgb(255, 128, 128);
+    border: 1px solid var(--error-color);
+    background-color: rgba(255, 128, 128, 0.5);
     border-radius: 8px;
 }
 
@@ -107,20 +109,72 @@ button {
     flex-wrap: wrap;
 }
 
+.profile-lblform {
+    border: none;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    color: white;
+}
+
+.section-title {
+    background-color: var(--primary-color);
+    padding: 15px;
+    width: 100%;
+}
+
+.section-row {
+    padding: 20px;
+    border-bottom: 1px solid gray;
+}
+
+.active {
+    border-radius: 50%;
+    background-color: var(--text-color);
+}
+
+.navbar-item:hover {
+    background-color: var(--accent-color);
+    border-radius: 5px;
+}
+
+.page-controller {
+    background-color: var(--accent-color);
+    padding: 10px 30px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.page-controller span {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+
+.scholar-dept {
+    color: gray;
+    margin-bottom: 10px;
+}
+
 .content {width: 100%;}
 .title img {border-radius: 50%;}
-.err-msg {color:red;}
-.scholar-dept {color: gray; }
-.btn-success:hover { background-color: #3b613d; }
-.btn-success {background-color: #448a48;}
-.btn-view {background-color: #0b4c6c;}
-.btn-view:hover {background-color: #001621;}
-.control { width: fit-content; }
-.navbar-item:hover { background-color: #062737; }
-.navbar-item { padding: 10px; }
-.container { margin: 20px 120px; }
-.input-err { border: 1px solid red;}
+.err-msg {color: var(--error-color);}
+.btn-success:hover {background-color: var(--success-color);}
+.btn-success {background-color: var(--primary-color);}
+.btn-view {background-color: var(--primary-color);}
+.btn-view:hover {background-color: var(--accent-color);}
+.navbar-item {padding: 10px;}
+.container {margin: 20px 120px;}
+.input-err {border: 1px solid var(--error-color);}
 .navbar-item div:hover {cursor: pointer;}
 .profile-action {display: flex;}
-.input-success { border: 1px solid green; }
-.success-msg { color: green; }
+.input-success {border: 1px solid var(--success-color);}
+.success-msg {color: var(--success-color);}
+.page-controller span:hover {cursor: pointer;}

@@ -1,47 +1,17 @@
 const Dept = require("../models/departments");
 const PortalScholar = require("../models/scholarportal");
 const User = require("../models/user");
-
-const fs = require("fs");
 let fetch;
 (async () => {
   const fetchModule = await import("node-fetch");
   fetch = fetchModule.default;
 })();
 const NodeCache = require("node-cache");
+const cache = new NodeCache({ stdTTL: 36000 });
 require("dotenv").config({ path: "../../../.env" });
 
-const loadCacheFromFile = (filePath) => {
-  try {
-    const data = fs.readFileSync(filePath, "utf8");
-    return JSON.parse(data);
-  } catch (error) {
-    if (error.code === "ENOENT") {
-      // File does not exist, create an empty cache file
-      fs.writeFileSync(filePath, "{}");
-      return {};
-    } else {
-      console.error("Error loading cache from file:", error);
-      return {};
-    }
-  }
-};
-
-const cacheDataFromFile = loadCacheFromFile("cache.json");
-const cache = new NodeCache({ stdTTL: 36000 });
-cache.mset(cacheDataFromFile);
-
-const saveCacheToFile = (cache, filePath) => {
-  const dataToSave = JSON.stringify(cache.data);
-  fs.writeFileSync(filePath, dataToSave);
-};
-
-process.on("exit", () => {
-  saveCacheToFile(cache, "cache.json");
-});
-
 exports.getScholars = async (req, res) => {
-  const scholars = await PortalScholar.find().select("insttId");
+  const scholars = await PortalScholar.find().select(["insttId", "gscholarId"]);
   const scholarsDept = await Promise.all(
     scholars.map(async (scholar) => {
       const userDetails = await User.findOne({ insttId: scholar.insttId });
@@ -50,6 +20,7 @@ exports.getScholars = async (req, res) => {
         insttId: scholar.insttId,
         scholarName: userDetails.name,
         scholarDept: dept ? dept.name : null,
+        gscholarId: scholar.gscholarId,
       };
     })
   );
@@ -60,40 +31,84 @@ exports.getScholarIniDetails = async (req, res) => {
   try {
     const userData = await User.findOne({ insttId: req.body.insttId });
     const cacheData = cache.get(req.body.insttId);
-    console.log(cache);
+    const scholarDetails = await PortalScholar.findOne({
+      insttId: req.body.insttId,
+    });
     if (cacheData) {
       console.log("data in cache");
       return res.status(200).json({
         name: userData.name,
-        ...cacheData.gscholar,
-        papers: cacheData.gscholar.papers.slice(0, 10),
-        co_authors: cacheData.gscholar.co_authors.slice(0, 10),
+        vidwanId: scholarDetails.vidwanId,
+        gscholarId: scholarDetails.gscholarId,
+        orcidId: scholarDetails.orcidId,
+        ...cacheData,
+        papers: cacheData.papers.slice(0, 10),
+        papersCount: cacheData.papers.length,
+        co_authors: cacheData.co_authors.slice(0, 10),
+        co_authorsCount: cacheData.co_authors.length,
       });
     }
     const flaskURL = `http://localhost:${process.env.FLASK_PORT}/getscholardetails/`;
-    const scholarDetails = await PortalScholar.findOne({
-      insttId: req.body.insttId,
-    });
     const response = await fetch(flaskURL, {
       method: "POST",
       headers: { "Content-type": "application/json" },
-      body: JSON.stringify({
-        gscholarId: scholarDetails.gscholarId,
-        irinsId: scholarDetails.vidwanId,
-        orcidId: scholarDetails.orcidId,
-      }),
+      body: JSON.stringify({ gscholarId: scholarDetails.gscholarId }),
     });
     const resData = await response.json();
     cache.set(req.body.insttId, resData);
-    res.status(200).json({
+    res.json({
       name: userData.name,
-      ...resData.gscholar,
-      papers: resData.gscholar.papers.slice(0, 10),
-      co_authors: resData.gscholar.co_authors.slice(0, 10),
+      vidwanId: scholarDetails.vidwanId,
+      gscholarId: scholarDetails.gscholarId,
+      orcidId: scholarDetails.orcidId,
+      ...resData,
+      papers: resData.papers.slice(0, 10),
+      papersCount: resData.papers.length,
+      co_authors: resData.co_authors.slice(0, 10),
+      co_authorsCount: resData.co_authors.length,
     });
   } catch (error) {
     console.log(error);
   }
 };
 
-exports.getMorePapers = (req, res) => {};
+exports.getMorePapers = async (req, res) => {
+  try {
+    const cacheData = cache.get(req.body.insttId);
+    if (cacheData) {
+      console.log("paper data in cache");
+      return res.json(cacheData.papers.slice(req.body.start, req.body.end));
+    }
+    const flaskURL = `http://localhost:${process.env.FLASK_PORT}/getscholardetails/`;
+    const response = await fetch(flaskURL, {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ gscholarId: req.body.gscholarId }),
+    });
+    const resData = await response.json();
+    cache.set(req.body.insttId, resData);
+    return res.json(resData.papers.slice(req.body.start, req.body.end));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.getMoreCoAuthors = async (req, res) => {
+  try {
+    const cacheData = cache.get(req.body.insttId);
+    if (cacheData) {
+      console.log("coauthor data in cache");
+      return res.json(cacheData.co_authors.slice(req.body.start, req.body.end));
+    }
+    const flaskURL = `http://localhost:${process.env.FLASK_PORT}/getscholardetails/`;
+    const response = await fetch(flaskURL, {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ gscholarId: req.body.gscholarId }),
+    });
+    const resData = await response.json();
+    return res, json(resData.papers.slice(req.body.start, req.body.end));
+  } catch (error) {
+    console.log(error);
+  }
+};

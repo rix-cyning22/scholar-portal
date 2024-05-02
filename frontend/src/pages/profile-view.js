@@ -30,7 +30,11 @@ const DetailsPage = ({ backendPath }) => {
     <>
       <NavBar backendPath={backendPath} />
       <div className="container">
-        <div className="profile-title">
+        <div className="title">
+          <img
+            src={`https://scholar.googleusercontent.com/citations?view_op=view_photo&user=${user.gscholarId}&citpid=19`}
+            alt=""
+          />
           <h2>{user.userName}</h2>
         </div>
         <ProfileForm

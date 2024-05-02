@@ -17,7 +17,6 @@ const sessionStore = new MongoSessionConnect({
 });
 const app = express();
 app.use(bodyParser.json());
-console.log(process.env);
 app.use(
   cors({
     origin: "http://localhost:3000",
