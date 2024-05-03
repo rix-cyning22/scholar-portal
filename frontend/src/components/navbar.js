@@ -59,10 +59,7 @@ const NavBar = ({ backendPath }) => {
         ) : (
           <>
             <div className="navbar-item">
-              <a href="/auth/login">Login as a Scholar</a>
-            </div>
-            <div className="navbar-item">
-              <a href="/auth/signup">Sign Up as a Scholar</a>
+              <a href="/auth/login">Scholar Login</a>
             </div>
           </>
         )}

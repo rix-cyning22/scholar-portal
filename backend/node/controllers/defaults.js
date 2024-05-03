@@ -11,20 +11,33 @@ const cache = new NodeCache({ stdTTL: 36000 });
 require("dotenv").config({ path: "../../../.env" });
 
 exports.getScholars = async (req, res) => {
-  const scholars = await PortalScholar.find().select(["insttId", "gscholarId"]);
-  const scholarsDept = await Promise.all(
-    scholars.map(async (scholar) => {
-      const userDetails = await User.findOne({ insttId: scholar.insttId });
-      const dept = await Dept.findOne({ id: userDetails.deptId });
-      return {
-        insttId: scholar.insttId,
-        scholarName: userDetails.name,
-        scholarDept: dept ? dept.name : null,
-        gscholarId: scholar.gscholarId,
-      };
-    })
-  );
-  return res.status(200).json(scholarsDept);
+  try {
+    const users = req.body.deptId
+      ? await User.find({ deptId: req.body.deptId })
+      : await User.find();
+    const insttIds = users.map((user) => user.insttId);
+    const scholarsInDept = await PortalScholar.find({
+      insttId: { $in: insttIds },
+    }).lean();
+    const scholars = await Promise.all(
+      scholarsInDept.map(async (scholar) => {
+        const user = await User.findOne({
+          insttId: scholar.insttId,
+        }).select(["name", "deptId"]);
+        const dept = await Dept.findOne({ id: user.deptId }).select("name");
+        return {
+          name: user.name,
+          gscholarId: scholar.gscholarId,
+          dept: dept.name,
+          insttId: scholar.insttId,
+        };
+      })
+    );
+
+    return res.json(scholars);
+  } catch (error) {
+    return res.status(500).json("error: " + error);
+  }
 };
 
 exports.getScholarIniDetails = async (req, res) => {
@@ -42,10 +55,12 @@ exports.getScholarIniDetails = async (req, res) => {
         gscholarId: scholarDetails.gscholarId,
         orcidId: scholarDetails.orcidId,
         ...cacheData,
-        papers: cacheData.papers.slice(0, 10),
-        papersCount: cacheData.papers.length,
-        co_authors: cacheData.co_authors.slice(0, 10),
-        co_authorsCount: cacheData.co_authors.length,
+        papers: cacheData.papers ? cacheData.papers.slice(0, 10) : null,
+        papersCount: cacheData.papers ? cacheData.papers.length : 0,
+        co_authors: cacheData.co_authors
+          ? cacheData.co_authors.slice(0, 8)
+          : null,
+        co_authorsCount: cacheData.co_authors ? cacheData.co_authors.length : 0,
       });
     }
     const flaskURL = `http://localhost:${process.env.FLASK_PORT}/getscholardetails/`;
@@ -62,10 +77,10 @@ exports.getScholarIniDetails = async (req, res) => {
       gscholarId: scholarDetails.gscholarId,
       orcidId: scholarDetails.orcidId,
       ...resData,
-      papers: resData.papers.slice(0, 10),
-      papersCount: resData.papers.length,
-      co_authors: resData.co_authors.slice(0, 10),
-      co_authorsCount: resData.co_authors.length,
+      papers: resData.papers ? resData.papers.slice(0, 10) : null,
+      papersCount: resData.papers ? resData.papers.length : null,
+      co_authors: resData.co_authors ? resData.co_authors.slice(0, 8) : null,
+      co_authorsCount: resData.co_authors ? resData.co_authors.length : null,
     });
   } catch (error) {
     console.log(error);
@@ -111,4 +126,9 @@ exports.getMoreCoAuthors = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+exports.getDepts = async (req, res) => {
+  const depts = await Dept.find();
+  return res.json(depts);
 };

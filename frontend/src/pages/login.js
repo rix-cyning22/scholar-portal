@@ -41,7 +41,7 @@ const LoginPage = ({ backendPath }) => {
           <Input inputname="userId" placeholder="ID" />
           <Input inputname="password" placeholder="Password" />
           <div className="control">
-            <button className="btn-success" type="submit">
+            <button className="btn-view" type="submit">
               Log In
             </button>
             <p>

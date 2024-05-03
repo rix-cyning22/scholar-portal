@@ -10,23 +10,29 @@ def scrape_scholar(author_id, serpapi_key=None):
 
     search = GoogleSearch(params)
     scholar_info = search.get_dict()
-    scholar_info["articles"] = [
-        {
-            "title": paper["title"],
-            "url": paper["link"],
-            "authors": paper["authors"].split(", "),
-            "year": paper["year"],
-        }
-        for paper in scholar_info["articles"]
-    ]
-    scholar_info["co_authors"] = [
-        {
-            "name": co_author["name"],
-            "affiliations": co_author["affiliations"],
-            "link": co_author["link"],
-        }
-        for co_author in scholar_info["co_authors"]
-    ]
+    try:
+        scholar_info["articles"] = [
+            {
+                "title": paper["title"],
+                "url": paper["link"],
+                "authors": paper["authors"].split(", "),
+                "year": paper["year"],
+            }
+            for paper in scholar_info["articles"]
+        ]
+    except:
+        scholar_info["articles"] = None
+    try:
+        scholar_info["co_authors"] = [
+            {
+                "name": co_author["name"],
+                "affiliations": co_author["affiliations"],
+                "link": co_author["link"],
+            }
+            for co_author in scholar_info["co_authors"]
+        ]
+    except:
+        scholar_info["co_authors"] = None
     scholar_info["cited_by"]["table"] = [
         {"mentions": cite[list(cite.keys())[0]]["all"], "type": list(cite.keys())[0]}
         for cite in scholar_info["cited_by"]["table"]

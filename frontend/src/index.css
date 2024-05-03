@@ -8,30 +8,9 @@
     --error-color: #dc3545;
 }
 
-.navbar {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 15px 20px 0px 20px;
-    position: sticky;
-    z-index: 100;
-    top: 0;
-}
-
 * {
     margin: 0;
     box-sizing: border-box;
-}
-
-.navbar-block {
-    display: flex;
-    gap: 5px;
-    justify-content: flex-end;
-}
-
-.navbar-item a, .navbar-item div {
-    text-decoration: none;
-    font-size: 18px;
-    color: white;
 }
 
 h1 a {
@@ -58,8 +37,9 @@ form {
 input {
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 50px;
     width: 100%;
+    border: 2px solid var(--accent-color);
 }
 
 button {
@@ -70,21 +50,38 @@ button {
     cursor: pointer;
 }
 
-.scholar-profile {
-    border: 1px solid lightgray;
-    border-radius: 6px;
-    padding: 25px;
+.scholar-heading {
+    position: sticky;
+    top: 64px;
     display: flex;
+    justify-content: space-around;
     align-items: center;
     width: 100%;
-    justify-content: space-between;
+    background-color: #e9e9e9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    padding: 10px;
+}
+
+.scholar-profile {
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
 }
 
 .scholar-list {
     display: flex;
-    flex-direction: column;
     gap: 10px;
     width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 10px;
 }
 
 .err {
@@ -119,62 +116,222 @@ button {
 .section-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-top: 50px;
     color: white;
+    border-bottom: 2px solid var(--primary-color);
+    border-radius: 60px;
 }
 
 .section-title {
     background-color: var(--primary-color);
-    padding: 15px;
-    width: 100%;
+    padding: 15px 20px;
+    border-radius: 30px;
 }
 
 .section-row {
     padding: 20px;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid #ddd;
 }
 
-.active {
-    border-radius: 50%;
-    background-color: var(--text-color);
-}
-
-.navbar-item:hover {
-    background-color: var(--accent-color);
-    border-radius: 5px;
+.section-row a, .scholar-info a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
 }
 
 .page-controller {
     background-color: var(--accent-color);
     padding: 10px 30px;
     display: flex;
-    gap: 20px;
+    gap: 10px;
     align-items: center;
+    justify-content: center;
+    border-radius: 20px;
 }
 
 .page-controller span {
     width: 30px;
     height: 30px;
     text-align: center;
+    line-height: 30px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.scholar-info {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+    margin: 5px;
 }
 
 .scholar-dept {
     color: gray;
+    text-align: center;
     margin-bottom: 10px;
 }
 
-.content {width: 100%;}
-.title img {border-radius: 50%;}
-.err-msg {color: var(--error-color);}
-.btn-success:hover {background-color: var(--success-color);}
-.btn-success {background-color: var(--primary-color);}
-.btn-view {background-color: var(--primary-color);}
+img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+
+.bar-container {
+    position: relative;
+    display: inline-block;
+    margin-right: 20px;
+    width: 300px;
+}
+
+.bar-select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    background-color: var(--primary-color);
+    color: white;
+    width: 100%;
+}
+
+.bar-select:hover {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.bar-option {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.bar-option:hover {
+    background-color: gray;
+    color: black;
+}
+.scholar-profile {
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: transform 0.3s ease;
+}
+
+.scholar-info h4 {
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.btn-view {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+.navbar {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 20px 0px 20px;
+    position: sticky;
+    z-index: 100;
+    top: 0;
+}
+
+.navbar-block {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: right;
+    padding: 10px;
+}
+
+.navbar-item a, .navbar-item div {
+    text-decoration: none;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.profile-action input {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.profile-action button {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.navbar-item a:hover, .navbar-item div:hover {background-color: var(--accent-color);}
+.navbar-title {font-family: 'Poppins', sans-serif;}
+.navbar-title a:hover {color: #f0f0f0;}
+td b {color: var(--accent-color)}
+td {color: var(--primary-color)}
+.navbar-title h1 {margin: 0;}
+.section-row a {font-style: italic;}
+.interests a:hover {color: var(--accent-color)}
+p {font-family: 'Poppins', sans-serif;}
 .btn-view:hover {background-color: var(--accent-color);}
-.navbar-item {padding: 10px;}
+.scholar-dept {color: gray;}
+.scholar-profile:hover {transform: translateY(-5px);}
+.scholar-info {margin-left: 20px;}
+.content {width: 100%;}
+.err-msg {color: var(--error-color);}
 .container {margin: 20px 120px;}
 .input-err {border: 1px solid var(--error-color);}
-.navbar-item div:hover {cursor: pointer;}
 .profile-action {display: flex;}
 .input-success {border: 1px solid var(--success-color);}
 .success-msg {color: var(--success-color);}
-.page-controller span:hover {cursor: pointer;}
+.section-row a:hover, .scholar-info a {color: var(--accent-color);}
+.interests.scholar-dept {color: gray;}
+.details-section {margin-bottom: 30px;}
+.section-row:last-child {border-bottom: none;}
+.section-title h3 {margin: 0;}
+.page-controller span:hover {background-color: var(--secondary-color);}
+.page-controller span.active {background-color: var(--text-color);}

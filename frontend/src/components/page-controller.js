@@ -1,24 +1,30 @@
 import { useParams } from "react-router";
 import { useState } from "react";
 
-const PageController = ({ totDetailsCount, apiPath, setParam, gscholarId }) => {
+const PageController = ({
+  detCount,
+  apiPath,
+  setParam,
+  gscholarId,
+  dispCount,
+}) => {
   const [page, setPage] = useState(1);
-  const totPages =
-    parseInt(totDetailsCount / 10) < 1 ? 1 : parseInt(totDetailsCount / 10);
+  const totPages = Math.ceil(detCount / dispCount);
   const { insttId } = useParams();
   const handlePageChange = async (pageNo) => {
     setPage(pageNo);
     const morePapers = await fetch(apiPath, {
       method: "POST",
       body: JSON.stringify({
-        start: (pageNo - 1) * 10,
-        end: pageNo * 10 > totDetailsCount ? totDetailsCount : pageNo * 10,
+        start: (pageNo - 1) * dispCount,
+        end: pageNo * 10 > detCount ? detCount : pageNo * dispCount,
         gscholarId: gscholarId,
         insttId: insttId,
       }),
       headers: { "Content-type": "application/json" },
     });
     const morePapersData = await morePapers.json();
+    console.log(morePapersData);
     setParam(morePapersData);
   };
   const renderPageNumbers = () => {

@@ -7,6 +7,7 @@ const PapersSection = ({
   totPaperCount,
   gscholarId,
 }) => {
+  console.log(totPaperCount);
   return (
     <div className="details-section">
       <div className="section-header">
@@ -14,25 +15,31 @@ const PapersSection = ({
           <h3>Papers</h3>
         </div>
         <PageController
-          totDetailsCount={totPaperCount}
+          detCount={totPaperCount}
           setParam={setPapers}
           apiPath={`${backendPath}/scholar/more-papers`}
           gscholarId={gscholarId}
+          dispCount={10}
         />
       </div>
-      {papers.map((paper, index) => {
-        return (
-          <div className="section-row" key={index}>
-            <a href={paper.url}>{paper.title}</a>
-            <div className="interests scholar-dept">
-              {paper.authors.map((coAuthor, index) => {
-                return <p key={index}>{coAuthor}</p>;
-              })}
-              <p>({paper.year})</p>
+      {papers ? (
+        papers.map((paper, index) => {
+          return (
+            <div className="section-row" key={index}>
+              <a href={paper.url}>
+                {paper.title} ({paper.year})
+              </a>
+              <div className="interests scholar-dept">
+                {paper.authors.map((coAuthor, index) => {
+                  return <p key={index}>{coAuthor}</p>;
+                })}
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })
+      ) : (
+        <p>No paper found</p>
+      )}
     </div>
   );
 };

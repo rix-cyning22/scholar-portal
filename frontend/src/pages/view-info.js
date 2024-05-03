@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import NavBar from "../components/navbar";
 import PapersSection from "../components/papers-section";
 import CoAuthorsSection from "../components/coauthors-section";
+import defaultUserLogo from "../default-user.jpg";
 
 const ViewInfoPage = ({ backendPath }) => {
   const { insttId } = useParams();
@@ -44,7 +45,13 @@ const ViewInfoPage = ({ backendPath }) => {
       <div className="container">
         <div className="content">
           <div className="title">
-            <img src={scholarInfo.thumbnail} alt="" />
+            <img
+              src={scholarInfo.thumbnail}
+              alt={defaultUserLogo}
+              onError={(e) => {
+                e.target.src = defaultUserLogo;
+              }}
+            />
             <div>
               <h2>{scholarInfo.name}</h2>
               <p className="scholar-dept">{scholarInfo.affiliations}</p>
@@ -64,6 +71,17 @@ const ViewInfoPage = ({ backendPath }) => {
                 </a>
                 <a href={`https://orcid.org/${scholarInfo.orcidId}`}>ORCID</a>
               </div>
+              <div className="interests">
+                {scholarInfo.interests
+                  ? scholarInfo.interests.map((interest, index) => {
+                      return (
+                        <a href={interest.link} key={index}>
+                          {interest.title}
+                        </a>
+                      );
+                    })
+                  : null}
+              </div>
             </div>
             <table className="citations">
               <tbody>
@@ -81,17 +99,6 @@ const ViewInfoPage = ({ backendPath }) => {
                   : null}
               </tbody>
             </table>
-          </div>
-          <div className="interests">
-            {scholarInfo.interests
-              ? scholarInfo.interests.map((interest, index) => {
-                  return (
-                    <a href={interest.link} key={index}>
-                      {interest.title}
-                    </a>
-                  );
-                })
-              : null}
           </div>
           <PapersSection
             backendPath={backendPath}
