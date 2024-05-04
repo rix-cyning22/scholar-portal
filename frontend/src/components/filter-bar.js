@@ -12,6 +12,10 @@ const FilterBar = ({ currDept, setCurrDept, backendPath }) => {
       setDepts(deptData);
     };
     fetchDepts();
+    const controller = new AbortController();
+    return () => {
+      controller.abort();
+    };
   }, [backendPath]);
 
   const dropdown = () => {

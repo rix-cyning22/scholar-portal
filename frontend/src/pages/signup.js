@@ -39,7 +39,7 @@ const SignupPage = ({ backendPath }) => {
       setFormErr(`Signup failed: ${error}`);
     }
   };
-
+  document.title = "Scholar Portal: Sign Up";
   return (
     <>
       <NavBar loggedIn={false} backendPath={backendPath} />

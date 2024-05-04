@@ -25,7 +25,12 @@ const DetailsPage = ({ backendPath }) => {
       } else navigate("/auth/login");
     };
     fetchUserDetails();
+    const controller = new AbortController();
+    return () => {
+      controller.abort();
+    };
   }, [backendPath, navigate]);
+  document.title = "Scholar Portal: View Profile";
   return (
     <>
       <NavBar backendPath={backendPath} />

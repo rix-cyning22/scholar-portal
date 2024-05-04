@@ -57,7 +57,7 @@ button {
     justify-content: space-around;
     align-items: center;
     width: 100%;
-    background-color: #e9e9e9;
+    background-color: #c7ffca;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     z-index: 100;
     padding: 10px;
@@ -230,6 +230,7 @@ img {
 .scholar-info h4 {
     margin: 0;
     color: var(--primary-color);
+    font-family: "Montserrat", sans-serif;
 }
 
 .btn-view {
@@ -240,6 +241,7 @@ img {
     padding: 10px 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-family: "Poppins", sans-serif;
 }
 
 h2 {
@@ -335,3 +337,4 @@ p {font-family: 'Poppins', sans-serif;}
 .section-title h3 {margin: 0;}
 .page-controller span:hover {background-color: var(--secondary-color);}
 .page-controller span.active {background-color: var(--text-color);}
+body {margin-bottom: 150px;}

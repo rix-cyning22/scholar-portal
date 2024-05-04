@@ -42,7 +42,11 @@ const PageController = ({
     }
     return pageNumbers;
   };
-  return <div className="page-controller">{renderPageNumbers()}</div>;
+  return (
+    <div className="page-controller">
+      {totPages > 0 ? renderPageNumbers() : <span>0</span>}
+    </div>
+  );
 };
 
 export default PageController;

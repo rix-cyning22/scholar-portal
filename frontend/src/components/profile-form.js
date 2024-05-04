@@ -9,6 +9,10 @@ const ProfileForm = ({ label, value = "", name, backendPath }) => {
   });
   useEffect(() => {
     setFieldValue(value);
+    const controller = new AbortController();
+    return () => {
+      controller.abort();
+    };
   }, [value]);
 
   const handleSubmit = async (event) => {
@@ -41,6 +45,11 @@ const ProfileForm = ({ label, value = "", name, backendPath }) => {
         error: true,
         message: msg,
       });
+
+    const controller = new AbortController();
+    return () => {
+      controller.abort();
+    };
   };
   const handleChange = (event) => {
     const val = event.target.value.trim();

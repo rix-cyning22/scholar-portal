@@ -1,5 +1,5 @@
 import PageController from "./page-controller";
-import defaultUserLogo from "../default-user.jpg";
+import ScholarCard from "./scholar";
 
 const CoAuthorsSection = ({
   coAuthors,
@@ -27,21 +27,11 @@ const CoAuthorsSection = ({
           coAuthors.map((coAuthor, index) => {
             const regex = /user=([a-zA-Z0-9_-]+)/;
             const match = coAuthor.link.match(regex);
-            const extractedText = match[1];
             return (
-              <div className="scholar-profile" key={index}>
-                <img
-                  src={`https://scholar.googleusercontent.com/citations?view_op=view_photo&user=${extractedText}&citpid=19`}
-                  alt={defaultUserLogo}
-                  onError={(e) => {
-                    e.target.src = defaultUserLogo;
-                  }}
-                />
-                <div className="scholar-info">
-                  <a href={coAuthor.link}>{coAuthor.name}</a>
-                  <p className="scholar-dept">{coAuthor.affiliations}</p>
-                </div>
-              </div>
+              <ScholarCard key={index} gscholarId={match[1]}>
+                <h4>{coAuthor.name}</h4>
+                <div className="scholar-dept">{coAuthor.affiliations}</div>
+              </ScholarCard>
             );
           })
         ) : (

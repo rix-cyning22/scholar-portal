@@ -14,6 +14,11 @@ const NavBar = ({ backendPath }) => {
         });
         const data = await response.json();
         setLoggedIn(data);
+
+        const controller = new AbortController();
+        return () => {
+          controller.abort();
+        };
       } catch (error) {
         console.error("Error checking login status:", error);
       }

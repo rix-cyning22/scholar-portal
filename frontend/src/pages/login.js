@@ -31,6 +31,7 @@ const LoginPage = ({ backendPath }) => {
       setFormErr(`${error}`);
     }
   };
+  document.title = "Scholar Portal: Login";
   return (
     <>
       <NavBar loggedIn={false} backendPath={backendPath} />
