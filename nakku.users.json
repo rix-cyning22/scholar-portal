@@ -1,0 +1,24 @@
+[{
+  "_id": {
+    "$oid": "6631c2c62513123b4d189575"
+  },
+  "insttId": "1",
+  "name": "Prasanta K. Jana",
+  "deptId": "1"
+},
+{
+  "_id": {
+    "$oid": "6631c31a2513123b4d189576"
+  },
+  "insttId": "2",
+  "name": "VMSR Murthy",
+  "deptId": "2"
+},
+{
+  "_id": {
+    "$oid": "6631c33d2513123b4d189577"
+  },
+  "insttId": "3",
+  "name": "Saurabh Srivastava",
+  "deptId": "1"
+}]
